@@ -11,6 +11,7 @@ class PickupNotificationSerializer(serializers.ModelSerializer):
     channel_label = serializers.CharField(source="get_channel_display", read_only=True)
     status_label = serializers.CharField(source="get_status_display", read_only=True)
     tracking_no = serializers.CharField(source="parcel.tracking_no", read_only=True)
+    pickup_code = serializers.CharField(source="parcel.pickup_code", read_only=True)
 
     class Meta:
         model = PickupNotification
@@ -18,6 +19,7 @@ class PickupNotificationSerializer(serializers.ModelSerializer):
             "id",
             "parcel",
             "tracking_no",
+            "pickup_code",
             "channel",
             "channel_label",
             "recipient",
