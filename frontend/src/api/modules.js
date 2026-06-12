@@ -15,6 +15,7 @@ export const parcelsApi = {
 
 export const notificationsApi = {
   list: () => api.get("/notifications/"),
+  resend: (phone) => api.post("/notifications/resend/", { phone }),
 };
 
 export const returnsApi = {

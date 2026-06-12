@@ -3,6 +3,10 @@ from rest_framework import serializers
 from .models import PickupNotification
 
 
+class ResendSerializer(serializers.Serializer):
+    phone = serializers.CharField(max_length=30)
+
+
 class PickupNotificationSerializer(serializers.ModelSerializer):
     channel_label = serializers.CharField(source="get_channel_display", read_only=True)
     status_label = serializers.CharField(source="get_status_display", read_only=True)
