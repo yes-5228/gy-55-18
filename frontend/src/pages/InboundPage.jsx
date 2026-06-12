@@ -6,6 +6,7 @@ import DataTable from "../components/DataTable";
 import MessageBox from "../components/MessageBox";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
+import eventBus from "../utils/eventBus";
 
 const initialForm = {
   tracking_no: "",
@@ -42,6 +43,7 @@ export default function InboundPage() {
       setMessage(`入库成功，柜格 ${created.locker_cell_detail.code}，取件码 ${created.pickup_code}。`);
       setForm(initialForm);
       loadParcels();
+      eventBus.emit("notifications:updated");
     } catch (err) {
       setError(err.message);
     }

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { notificationsApi, parcelsApi } from "../api/modules";
 import MessageBox from "../components/MessageBox";
 import PageHeader from "../components/PageHeader";
+import eventBus from "../utils/eventBus";
 
 export default function PickupPage() {
   const [pickupCode, setPickupCode] = useState("");
@@ -43,6 +44,7 @@ export default function PickupPage() {
       const data = await notificationsApi.resend(phone);
       setResendItems(data.notifications || []);
       setPhone("");
+      eventBus.emit("notifications:updated");
     } catch (err) {
       setResendError(err.message);
     } finally {

@@ -5,6 +5,7 @@ import { notificationsApi } from "../api/modules";
 import DataTable from "../components/DataTable";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
+import eventBus from "../utils/eventBus";
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
@@ -12,6 +13,8 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     load();
+    const off = eventBus.on("notifications:updated", load);
+    return off;
   }, []);
 
   return (
