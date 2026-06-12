@@ -13,7 +13,7 @@ export default function NotificationsPage() {
 
   useEffect(() => {
     load();
-    const off = eventBus.on("notifications:updated", load);
+    const off = eventBus.onBatch(["notifications:updated"], load);
     return off;
   }, []);
 

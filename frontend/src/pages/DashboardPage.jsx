@@ -26,14 +26,11 @@ export default function DashboardPage() {
 
   useEffect(() => {
     loadAll();
-    const off1 = eventBus.on("lockers:updated", loadAll);
-    const off2 = eventBus.on("parcels:updated", loadAll);
-    const off3 = eventBus.on("notifications:updated", loadAll);
-    return () => {
-      off1();
-      off2();
-      off3();
-    };
+    const off = eventBus.onBatch(
+      ["lockers:updated", "parcels:updated", "notifications:updated"],
+      loadAll,
+    );
+    return off;
   }, []);
 
   const storedCount = parcels.filter((parcel) => parcel.status === "stored").length;

@@ -27,7 +27,7 @@ export default function LockerMonitorPage() {
 
   useEffect(() => {
     load();
-    const off = eventBus.on("lockers:updated", load);
+    const off = eventBus.onBatch(["lockers:updated"], load);
     return off;
   }, []);
 

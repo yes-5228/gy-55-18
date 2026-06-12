@@ -6,6 +6,7 @@ import DataTable from "../components/DataTable";
 import MessageBox from "../components/MessageBox";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
+import eventBus from "../utils/eventBus";
 
 export default function ReturnPage() {
   const [parcels, setParcels] = useState([]);
@@ -35,6 +36,8 @@ export default function ReturnPage() {
       setForm({ parcel_id: "", reason: "timeout", operator: "管理员", remark: "" });
       setMessage("退件单已创建。");
       load();
+      eventBus.emit("parcels:updated");
+      eventBus.emit("lockers:updated");
     } catch (err) {
       setError(err.message);
     }
@@ -47,6 +50,8 @@ export default function ReturnPage() {
       await returnsApi.complete(id);
       setMessage("退件已完成，柜格已释放。");
       load();
+      eventBus.emit("parcels:updated");
+      eventBus.emit("lockers:updated");
     } catch (err) {
       setError(err.message);
     }
