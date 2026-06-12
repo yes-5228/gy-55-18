@@ -35,7 +35,6 @@ export default function LockerMonitorPage() {
     setError("");
     try {
       await fn();
-      load();
       eventBus.emit("lockers:updated");
     } catch (err) {
       setError(err.message);

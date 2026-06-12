@@ -23,6 +23,8 @@ export default function ReturnPage() {
 
   useEffect(() => {
     load();
+    const off = eventBus.onBatch(["parcels:updated", "lockers:updated"], load);
+    return off;
   }, []);
 
   const storedParcels = useMemo(() => parcels.filter((parcel) => parcel.status === "stored"), [parcels]);
@@ -35,7 +37,6 @@ export default function ReturnPage() {
       await returnsApi.create({ ...form, parcel_id: Number(form.parcel_id) });
       setForm({ parcel_id: "", reason: "timeout", operator: "管理员", remark: "" });
       setMessage("退件单已创建。");
-      load();
       eventBus.emit("parcels:updated");
       eventBus.emit("lockers:updated");
     } catch (err) {
@@ -49,7 +50,6 @@ export default function ReturnPage() {
     try {
       await returnsApi.complete(id);
       setMessage("退件已完成，柜格已释放。");
-      load();
       eventBus.emit("parcels:updated");
       eventBus.emit("lockers:updated");
     } catch (err) {
