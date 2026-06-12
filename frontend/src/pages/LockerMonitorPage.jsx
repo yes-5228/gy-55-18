@@ -7,6 +7,7 @@ import MessageBox from "../components/MessageBox";
 import MetricCard from "../components/MetricCard";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
+import eventBus from "../utils/eventBus";
 
 export default function LockerMonitorPage() {
   const [cells, setCells] = useState([]);
@@ -26,6 +27,8 @@ export default function LockerMonitorPage() {
 
   useEffect(() => {
     load();
+    const off = eventBus.on("lockers:updated", load);
+    return off;
   }, []);
 
   const operate = async (fn) => {
@@ -33,6 +36,7 @@ export default function LockerMonitorPage() {
     try {
       await fn();
       load();
+      eventBus.emit("lockers:updated");
     } catch (err) {
       setError(err.message);
     }

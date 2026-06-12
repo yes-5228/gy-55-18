@@ -43,6 +43,8 @@ export default function InboundPage() {
       setMessage(`入库成功，柜格 ${created.locker_cell_detail.code}，取件码 ${created.pickup_code}。`);
       setForm(initialForm);
       loadParcels();
+      eventBus.emit("lockers:updated");
+      eventBus.emit("parcels:updated");
       eventBus.emit("notifications:updated");
     } catch (err) {
       setError(err.message);

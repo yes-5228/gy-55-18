@@ -6,6 +6,7 @@ import DataTable from "../components/DataTable";
 import MetricCard from "../components/MetricCard";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
+import eventBus from "../utils/eventBus";
 
 export default function DashboardPage() {
   const [summary, setSummary] = useState(null);
@@ -13,7 +14,7 @@ export default function DashboardPage() {
   const [returns, setReturns] = useState([]);
   const [notifications, setNotifications] = useState([]);
 
-  useEffect(() => {
+  const loadAll = () =>
     Promise.all([lockersApi.summary(), parcelsApi.list(), returnsApi.list(), notificationsApi.list()]).then(
       ([summaryData, parcelData, returnData, notificationData]) => {
         setSummary(summaryData);
@@ -22,6 +23,17 @@ export default function DashboardPage() {
         setNotifications(notificationData);
       },
     );
+
+  useEffect(() => {
+    loadAll();
+    const off1 = eventBus.on("lockers:updated", loadAll);
+    const off2 = eventBus.on("parcels:updated", loadAll);
+    const off3 = eventBus.on("notifications:updated", loadAll);
+    return () => {
+      off1();
+      off2();
+      off3();
+    };
   }, []);
 
   const storedCount = parcels.filter((parcel) => parcel.status === "stored").length;

@@ -27,6 +27,8 @@ export default function PickupPage() {
       const data = await parcelsApi.open(pickupCode);
       setResult(`${data.message} 运单号 ${data.parcel.tracking_no} 已标记取件。`);
       setPickupCode("");
+      eventBus.emit("lockers:updated");
+      eventBus.emit("parcels:updated");
     } catch (err) {
       setError(err.message);
     } finally {
